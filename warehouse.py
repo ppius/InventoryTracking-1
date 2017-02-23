@@ -19,21 +19,35 @@ class Bin:
         for item in self.contents:
             s += '\n  ' + item.__str__()
         return s
+class Warehouse:
+    def addbi(self, bi):
+        self.bis.append(bi)
+
+    def rmbi(self, bi):
+        self.bis.remove(bi.name)
 
     def add(self, item):
-        for index, value in enumerate(self.contents):
+        for index, value in enumerate(bi.contents):
             if value.sku == item.sku:
                 value.quantity += item.quantity
                 break
             if value.sku < item.sku:
                 continue
             else:
-                self.contents.insert(index, item)
+                bi.contents.insert(index, item)
                 break
         else:
-            self.contents.append(item)
-
-
+            bi.contents.append(item)
+    def sell(bi, item):
+        for index, amount in enumerate(bi.contents):
+            if amount.sku == item.sku:
+                if amount.quantity - item.quantity == 0:
+                    bi.contents.remove(amount)
+                    break
+                else:
+                    bi.contents.remove(amount)
+                    bi.add(BinItem(item.sku, amount.quantity - item.quantity))
+                    break
 if __name__ == '__main__':
     import doctest
     doctest.testfile("bin_tests.txt")
